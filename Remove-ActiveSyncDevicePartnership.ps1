@@ -6,6 +6,8 @@
 	
 	THIS CODE IS MADE AVAILABLE AS IS, WITHOUT WARRANTY OF ANY KIND. THE ENTIRE 
 	RISK OF THE USE OR THE RESULTS FROM THE USE OF THIS CODE REMAINS WITH THE USER.
+
+    Send comments and remars to: support@granikos.eu
 	
 	Version 1.0, 2015-04-09
  
@@ -13,7 +15,9 @@
     More information can be found at http://www.rubertus.net/Blog/tabid/85/EntryId/41/Scripted-removing-of-ActiveSync-Device-Partnerships.aspx 
 	
     .DESCRIPTION
-	
+
+    THis script removes ActiveSync device association from user mailboxes
+    that have been inactive for more than 150 days.
 
     .NOTES 
     Requirements 
@@ -31,7 +35,6 @@
 
 ### BEGIN SnapIns -------------------------------------------------------------
 
-
 # Add Exchange SnapIn if not already loaded
 if ( (Get-PSSnapin -Name Microsoft.Exchange.Management.PowerShell.E2010 -ErrorAction SilentlyContinue) -eq $null )
 {
@@ -46,7 +49,7 @@ if ( (Get-PSSnapin -Name Microsoft.Exchange.Management.PowerShell.E2010 -ErrorAc
 
 ### END SnapIns ---------------------------------------------------------------
 
-### BEGIN Variables -----------------------------------------------------------
+### BEGIN Variables | EDIT ACCORDING TO YOUR NEEDS ----------------------------
 
 # ScriptPath
 $scriptPath = "C:\Scripts\Remove-ActiveSync-Devices\"
@@ -105,7 +108,6 @@ ForEach ($Mailbox in $Mailboxes)
         Write-Host "User $MailboxAlias has only $CountAllDevicesFromSpecificUser ActiveSync Devices. Nothing to delete!" -ForegroundColor Green
         Log "User $MailboxAlias has only $CountAllDevicesFromSpecificUser ActiveSync Devices. Nothing to delete!"
     }
-
    
     If (($CountAllDevicesFromSpecificUser -gt 4) -and ($CountAllDevicesFromSpecificUserNotSynchronizedSince150Days -gt 1))
     {
@@ -132,7 +134,6 @@ ForEach ($Mailbox in $Mailboxes)
             $Device | Remove-ActiveSyncDevice -WarningAction SilentlyContinue
         }
     }
-
 }
 
 # Script finished
